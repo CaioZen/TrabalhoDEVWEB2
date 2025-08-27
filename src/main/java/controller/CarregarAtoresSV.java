@@ -12,8 +12,8 @@ import model.domain.Ator;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/CarregarAtorSV")
-public class CarregarAtorSV extends HttpServlet {
+@WebServlet("/CarregarAtoresSV")
+public class CarregarAtoresSV extends HttpServlet {
     private CarregarAtoresAP carregarAtoresAP = new CarregarAtoresAP();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
