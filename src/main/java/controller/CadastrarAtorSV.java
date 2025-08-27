@@ -21,7 +21,7 @@ public class CadastrarAtorSV extends HttpServlet {
         //Pegando o nome do ator do formulário e mandando para a aplicação
         String nomeAtor = request.getParameter("nomeAtor");
         Ator ator = cadastrarAtorAP.cadastrar(nomeAtor);
-        System.out.println("Nome do ator: "+ator.getNomeAtor());
+        //Atualizando a lista de atores e mandando para a página index.jsp
         List<Ator> atores = carregarAtoresAP.listarAtores();
         HttpSession session = request.getSession();
         session.setAttribute("atores", atores);

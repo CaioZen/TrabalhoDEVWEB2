@@ -17,8 +17,8 @@ public class CarregarAtorSV extends HttpServlet {
     private CarregarAtoresAP carregarAtoresAP = new CarregarAtoresAP();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //Carregando a lista de atores e mandando para a página index.jsp
         List<Ator> atores = carregarAtoresAP.listarAtores();
-        System.out.println("Lista de atores: "+atores.toString());
         HttpSession session = request.getSession();
         session.setAttribute("atores", atores);
         response.sendRedirect("index.jsp");
