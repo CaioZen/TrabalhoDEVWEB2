@@ -1,3 +1,5 @@
+<%@ page import="model.domain.Ator" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,6 +23,42 @@
 
         <button type="submit" class="btn-submit">Enviar</button>
     </form>
+</div>
+<div class="container">
+    <h2>Atores Cadastrados</h2>
+
+    <table class="actors-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome do Ator</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <%
+            List<Ator> atores = (List<Ator>) session.getAttribute("atores");
+            if(atores != null) {
+                for(Ator ator : atores) {
+        %>
+        <tr>
+            <td><%= ator.getIdAtor() %></td>
+            <td><%= ator.getNomeAtor() %></td>
+            <td>
+                <button class="btn-edit" onclick="editarAtor(<%= ator.getIdAtor() %>)">Editar</button>
+                <button class="btn-delete" onclick="excluirAtor(<%= ator.getIdAtor() %>)">Excluir</button>
+            </td>
+        </tr>
+        <%
+                }
+            }
+        %>
+        </tbody>
+    </table>
+
+    <div class="no-actors" style="display: none;">
+        <p>Nenhum ator cadastrado ainda.</p>
+    </div>
 </div>
 </body>
 </html>
