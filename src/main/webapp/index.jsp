@@ -3,14 +3,6 @@
 <%@ page import="model.application.CarregarAtoresAP" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%
-    // Carregar atores se não estiverem na sessão
-    List<Ator> atores = (List<Ator>) session.getAttribute("atores");
-    if (atores == null) {
-        CarregarAtoresAP carregarAtoresAP = new CarregarAtoresAP();
-        atores = carregarAtoresAP.listarAtores();
-        session.setAttribute("atores", atores);
-    }
-    
     // Verificar se está editando um ator
     Ator atorEditando = (Ator) request.getAttribute("atorEditando");
     boolean isEdicao = atorEditando != null;
@@ -62,6 +54,7 @@
         </thead>
         <tbody>
         <%
+            List<Ator> atores = (List<Ator>) session.getAttribute("atores");
             if(atores != null && !atores.isEmpty()) {
                 for(Ator ator : atores) {
         %>
