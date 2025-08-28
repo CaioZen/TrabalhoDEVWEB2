@@ -1,27 +1,52 @@
 <%@ page import="model.domain.Ator" %>
 <%@ page import="java.util.List" %>
+<%@ page import="model.application.CarregarAtoresAP" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%
+    // Carregar atores se não estiverem na sessão
+    List<Ator> atores = (List<Ator>) session.getAttribute("atores");
+    if (atores == null) {
+        CarregarAtoresAP carregarAtoresAP = new CarregarAtoresAP();
+        atores = carregarAtoresAP.listarAtores();
+        session.setAttribute("atores", atores);
+    }
+    
+    // Verificar se está editando um ator
+    Ator atorEditando = (Ator) request.getAttribute("atorEditando");
+    boolean isEdicao = atorEditando != null;
+%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Frame por Frame - Cadastro de ator</title>
+    <title>Frame por Frame - <%= isEdicao ? "Editar" : "Cadastro de" %> Ator</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilo.css">
 </head>
 
 <body>
 <div class="container">
-    <h1>Cadastro de Ator</h1>
+    <h1><%= isEdicao ? "Editar" : "Cadastrar" %> Ator</h1>
 
-    <form id="formularioAtor" action="${pageContext.request.contextPath}/CadastrarAtorSV" method="POST">
+    <form id="formularioAtor" action="${pageContext.request.contextPath}/<%= isEdicao ? "EditarAtorSV" : "CadastrarAtorSV" %>" method="POST">
+        <% if (isEdicao) { %>
+            <input type="hidden" name="idAtor" value="<%= atorEditando.getIdAtor() %>">
+        <% } %>
+        
         <div class="form-group">
             <label for="nomeAtor">Nome do Ator:</label>
-            <input type="text" id="nomeAtor" name="nomeAtor" required placeholder="Digite o nome do ator">
+            <input type="text" id="nomeAtor" name="nomeAtor" 
+                   value="<%= isEdicao ? atorEditando.getNomeAtor() : "" %>" 
+                   required placeholder="Digite o nome do ator">
         </div>
 
-        <button type="submit" class="btn-submit">Enviar</button>
+        <div class="form-actions">
+            <button type="submit" class="btn-submit"><%= isEdicao ? "Salvar Alterações" : "Cadastrar" %></button>
+            <% if (isEdicao) { %>
+                <a href="${pageContext.request.contextPath}/index.jsp" class="btn-cancel">Cancelar</a>
+            <% } %>
+        </div>
     </form>
 </div>
 <div class="container">
@@ -37,28 +62,32 @@
         </thead>
         <tbody>
         <%
-            List<Ator> atores = (List<Ator>) session.getAttribute("atores");
-            if(atores != null) {
+            if(atores != null && !atores.isEmpty()) {
                 for(Ator ator : atores) {
         %>
         <tr>
             <td><%= ator.getIdAtor() %></td>
             <td><%= ator.getNomeAtor() %></td>
             <td>
-                <button class="btn-edit" onclick="editarAtor(<%= ator.getIdAtor() %>)">Editar</button>
-                <button class="btn-delete" onclick="excluirAtor(<%= ator.getIdAtor() %>)">Excluir</button>
+                <a href="${pageContext.request.contextPath}/EditarAtorSV?idAtor=<%= ator.getIdAtor() %>" class="btn-edit">Editar</a>
+                <form action="${pageContext.request.contextPath}/ExcluirAtorSV" method="POST" style="display: inline;">
+                    <input type="hidden" name="idAtor" value="<%= ator.getIdAtor() %>">
+                    <button type="submit" class="btn-delete" onclick="return confirm('Tem certeza que deseja excluir este ator?')">Excluir</button>
+                </form>
             </td>
         </tr>
         <%
                 }
+            } else {
+        %>
+        <tr>
+            <td colspan="3" style="text-align: center; color: #666; font-style: italic;">Nenhum ator cadastrado ainda.</td>
+        </tr>
+        <%
             }
         %>
         </tbody>
     </table>
-
-    <div class="no-actors" style="display: none;">
-        <p>Nenhum ator cadastrado ainda.</p>
-    </div>
 </div>
 </body>
 </html>

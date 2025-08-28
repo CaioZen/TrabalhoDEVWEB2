@@ -95,6 +95,8 @@ h2 {
 
 .actors-table td:last-child {
     text-align: center;
+    white-space: nowrap;
+    width: 150px;
 }
 
 /* Botões de ação */
@@ -133,4 +135,50 @@ h2 {
     color: #666;
     font-style: italic;
     padding: 20px;
+}
+
+/* Estilos para página de edição */
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.form-actions .btn-submit {
+    flex: 1;
+}
+
+.form-actions .btn-cancel {
+    flex: 1;
+}
+
+.btn-cancel {
+    background-color: #6c757d;
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+    transition: background-color 0.3s;
+    flex: 1;
+    display: inline-block;
+}
+
+.btn-cancel:hover {
+    background-color: #545b62;
+    text-decoration: none;
+    color: white;
+}
+
+.error-message {
+    text-align: center;
+    color: #dc3545;
+    padding: 20px;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    margin: 20px 0;
 }
